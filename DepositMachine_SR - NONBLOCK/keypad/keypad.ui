@@ -1,0 +1,1832 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>keypad</class>
+ <widget class="QWidget" name="keypad">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>793</width>
+    <height>356</height>
+   </rect>
+  </property>
+  <property name="mouseTracking">
+   <bool>false</bool>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
+  <widget class="QPushButton" name="PB_1">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>80</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">1</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_2">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>80</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">2</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_3">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>80</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">3</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_4">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>80</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">4</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_5">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>80</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">5</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_6">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>80</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">6</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_7">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>80</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">7</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_8">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>80</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">8</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_9">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>80</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">9</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_0">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>80</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_q">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>150</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">7</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">8</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">q</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_u">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>150</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">25</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">25</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">u</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_w">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>150</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">12</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">13</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">w</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_t">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>150</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">9</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">10</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">t</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_y">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>150</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">31</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">31</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">y</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_r">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>150</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">0</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">1</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">r</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_i">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>150</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">21</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">21</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">i</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_o">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>150</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">20</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">22</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">o</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_p">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>150</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">24</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">26</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">p</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_e">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>150</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">3</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">4</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">e</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_a">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>220</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">6</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">6</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">a</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_j">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>220</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">23</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">23</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">j</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_s">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>220</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">2</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">2</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">s</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_g">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>220</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">18</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">18</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">g</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_h">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>220</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">27</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">27</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">h</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_f">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>220</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">5</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">5</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">f</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_k">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>220</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">19</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">19</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">k</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_l">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>220</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">39</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">39</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">l</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_d">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>220</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">11</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">11</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">d</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_z">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>290</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">15</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">15</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">z</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_v">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>290</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">17</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">17</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">v</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_m">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>290</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">37</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">37</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">m</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_b">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>290</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">36</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">36</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">b</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_c">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>290</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">14</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">14</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">c</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_x">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>290</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">16</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">16</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">x</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_n">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>290</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string notr="true">32</string>
+   </property>
+   <property name="statusTip">
+    <string notr="true">32</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">n</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_x0">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>360</y>
+     <width>51</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">~</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_paste">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>360</y>
+     <width>77</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">Paste</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_copy">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>360</y>
+     <width>103</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">Copy</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_shift">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>220</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">Shift</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_back">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>10</y>
+     <width>91</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">←</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_x1">
+   <property name="geometry">
+    <rect>
+     <x>820</x>
+     <y>60</y>
+     <width>52</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">-</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_enter">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>10</y>
+     <width>101</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">Enter</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_x2">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>290</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">,</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_x3">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>290</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">.</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_x4">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>360</y>
+     <width>51</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">/</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>9</y>
+     <width>271</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::TabFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+   </property>
+   <property name="dragEnabled">
+    <bool>false</bool>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_clear">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>10</y>
+     <width>101</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">CLEAR</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PB_tr">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>290</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{ 
+border-image: url(:/image/P2.png);
+color:white;
+}
+
+QPushButton:checked{
+background-color: rgb(126, 67, 67);
+	color: rgb(131, 255, 177);
+}</string>
+   </property>
+   <property name="text">
+    <string notr="true">TR</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <zorder>PB_1</zorder>
+  <zorder>PB_2</zorder>
+  <zorder>PB_3</zorder>
+  <zorder>PB_4</zorder>
+  <zorder>PB_5</zorder>
+  <zorder>PB_6</zorder>
+  <zorder>PB_7</zorder>
+  <zorder>PB_8</zorder>
+  <zorder>PB_9</zorder>
+  <zorder>PB_0</zorder>
+  <zorder>PB_q</zorder>
+  <zorder>PB_u</zorder>
+  <zorder>PB_w</zorder>
+  <zorder>PB_t</zorder>
+  <zorder>PB_y</zorder>
+  <zorder>PB_r</zorder>
+  <zorder>PB_i</zorder>
+  <zorder>PB_o</zorder>
+  <zorder>PB_p</zorder>
+  <zorder>PB_e</zorder>
+  <zorder>PB_a</zorder>
+  <zorder>PB_j</zorder>
+  <zorder>PB_s</zorder>
+  <zorder>PB_g</zorder>
+  <zorder>PB_h</zorder>
+  <zorder>PB_f</zorder>
+  <zorder>PB_k</zorder>
+  <zorder>PB_l</zorder>
+  <zorder>PB_d</zorder>
+  <zorder>PB_z</zorder>
+  <zorder>PB_v</zorder>
+  <zorder>PB_m</zorder>
+  <zorder>PB_b</zorder>
+  <zorder>PB_c</zorder>
+  <zorder>PB_x</zorder>
+  <zorder>PB_n</zorder>
+  <zorder>PB_x0</zorder>
+  <zorder>PB_paste</zorder>
+  <zorder>PB_copy</zorder>
+  <zorder>PB_shift</zorder>
+  <zorder>PB_back</zorder>
+  <zorder>PB_x1</zorder>
+  <zorder>PB_x2</zorder>
+  <zorder>PB_x3</zorder>
+  <zorder>PB_x4</zorder>
+  <zorder>lineEdit</zorder>
+  <zorder>PB_clear</zorder>
+  <zorder>PB_enter</zorder>
+  <zorder>PB_tr</zorder>
+ </widget>
+ <tabstops>
+  <tabstop>PB_1</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

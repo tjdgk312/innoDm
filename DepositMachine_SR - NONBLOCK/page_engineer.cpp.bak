@@ -1,0 +1,119 @@
+#include "page_engineer.h"
+#include "ui_page_engineer.h"
+#include "global.h"
+
+
+page_engineer::page_engineer(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::page_engineer)
+{
+    ui->setupUi(this);
+
+    engineer_timer = new QTimer(this);
+    connect(engineer_timer , SIGNAL(timeout()), this, SLOT(set_timeout()));
+    engineer_timer->start(500);
+}
+
+page_engineer::~page_engineer()
+{
+    delete ui;
+}
+
+void page_engineer::set_timeout()
+{
+
+
+}
+
+
+void page_engineer::on_btn_test_clicked()
+{
+    p_Main->select_Page(MENUPAGE);
+}
+
+void page_engineer::on_Btn_Deposit_clicked()
+{
+    vaultOpenAcceptorGate();
+}
+
+void page_engineer::on_Btn_Enable_clicked()
+{
+    cmd_CountStart();
+}
+
+void page_engineer::on_Btn_Disable_clicked()
+{
+//    uint32_t   sendCmd =CMD_CURRENCY_STOP;
+//    QByteArray sendData("");
+
+//    p_Main->m_stateThread->transaction(sendCmd,sendData);
+}
+
+void page_engineer::on_Btn_IDLE_clicked()
+{
+    vaultCloseAcceptorGate();
+}
+
+void page_engineer::on_Btn_Return_clicked()
+{
+    vaultOpenGate();
+}
+
+void page_engineer::on_Btn_Door_Lock_clicked()
+{
+    transLockDoorGate();
+}
+
+void page_engineer::on_Btn_Door_Unlock_clicked()
+{
+    transUnlockDoorGate();
+}
+
+void page_engineer::on_btn_SetCurPage_clicked()
+{
+    p_Main->select_Page(SETTINGPAGE);
+//    p_Main->p_certifyUser->set_certNumpadPosition();
+}
+
+void page_engineer::on_Btn_sealSeq_clicked()
+{
+    cmd_SettlementStart();
+}
+
+void page_engineer::on_Btn_seal_open_clicked()
+{
+//    uint32_t   sendCmd = CMD_SEAL_OPEN;
+//    QByteArray sendData("");
+
+//    p_Main->m_stateThread->transaction(sendCmd,sendData);
+}
+
+void page_engineer::on_Btn_Lock_close_clicked()
+{
+//    uint32_t   sendCmd = CMD_LOCK_CLOSE;
+//    QByteArray sendData("");
+
+//    p_Main->m_stateThread->transaction(sendCmd,sendData);
+}
+
+void page_engineer::on_Btn_Receipt_print_clicked()
+{
+//    uint32_t   sendCmd = CMD_OUTGATE_OPEN;
+//    p_Main->m_stateThread->transaction(sendCmd,"");
+//    QByteArray sendData("ABCDEFGHIJKLMNOPQRSTUVWXYZ012345678 \n     unit    num       total \n    1,000   20    20,000  \
+//         \n     5,000    10     50,000 \n    10,000    20    200,000 \n    50,000    4     200,000 \n\n   Total:       2,000,000 \n User : unKown   \
+//       \n Branch : K Bank \n Have a Nice day \n \n Test4.....0098764\n");
+
+//    sendCmd = CMD_RECEIPT_PRINT;
+//    p_Main->m_stateThread->transaction(sendCmd,sendData);
+}
+
+void page_engineer::on_Btn_Barcode_clicked()
+{
+    cmd_barcodeScanStart();
+}
+
+void page_engineer::on_Btn_Print_clicked()
+{
+    p_Main->pResult->receipt_Setup(0,0);
+}

@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>page_menu</class>
+ <widget class="QWidget" name="page_menu">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
+  <widget class="QFrame" name="frm_country">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>20</y>
+     <width>741</width>
+     <height>421</height>
+    </rect>
+   </property>
+   <property name="locale">
+    <locale language="English" country="UnitedStates"/>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QPushButton" name="btn_country_1">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>120</y>
+      <width>200</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string notr="true">01</string>
+    </property>
+    <property name="statusTip">
+     <string notr="true">01</string>
+    </property>
+    <property name="whatsThis">
+     <string notr="true">01</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/image/base6.png);</string>
+    </property>
+    <property name="text">
+     <string>USD</string>
+    </property>
+    <property name="icon">
+     <iconset resource="image.qrc">
+      <normaloff>:/image/countryFlag/usa.PNG</normaloff>:/image/countryFlag/usa.PNG</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="autoRepeat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_country_2">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>120</y>
+      <width>200</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string notr="true">04</string>
+    </property>
+    <property name="statusTip">
+     <string notr="true">04</string>
+    </property>
+    <property name="whatsThis">
+     <string notr="true">04</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/image/base6.png);</string>
+    </property>
+    <property name="locale">
+     <locale language="Japanese" country="Japan"/>
+    </property>
+    <property name="text">
+     <string>EUR</string>
+    </property>
+    <property name="icon">
+     <iconset resource="image.qrc">
+      <normaloff>:/image/countryFlag/euro.jpg</normaloff>:/image/countryFlag/euro.jpg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_country_3">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>120</y>
+      <width>200</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string notr="true">25</string>
+    </property>
+    <property name="statusTip">
+     <string notr="true">25</string>
+    </property>
+    <property name="whatsThis">
+     <string notr="true">25</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/image/base6.png);</string>
+    </property>
+    <property name="text">
+     <string>AED</string>
+    </property>
+    <property name="icon">
+     <iconset resource="image.qrc">
+      <normaloff>:/image/countryFlag/uae.PNG</normaloff>:/image/countryFlag/uae.PNG</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_country_4">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>280</y>
+      <width>200</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string notr="true">03</string>
+    </property>
+    <property name="statusTip">
+     <string notr="true">03</string>
+    </property>
+    <property name="whatsThis">
+     <string notr="true">03</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/image/base6.png);</string>
+    </property>
+    <property name="text">
+     <string>KRW</string>
+    </property>
+    <property name="icon">
+     <iconset resource="image.qrc">
+      <normaloff>:/image/countryFlag/korea.PNG</normaloff>:/image/countryFlag/korea.PNG</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_country_5">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>280</y>
+      <width>200</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string notr="true"/>
+    </property>
+    <property name="statusTip">
+     <string notr="true">03</string>
+    </property>
+    <property name="whatsThis">
+     <string notr="true"/>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/image/base6.png);</string>
+    </property>
+    <property name="text">
+     <string>-</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>30</y>
+      <width>681</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>30</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+      <underline>false</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>권종을 선택해주세요</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <zorder>btn_country_2</zorder>
+   <zorder>btn_country_3</zorder>
+   <zorder>btn_country_4</zorder>
+   <zorder>btn_country_1</zorder>
+   <zorder>btn_country_5</zorder>
+   <zorder>label_2</zorder>
+  </widget>
+  <widget class="QPushButton" name="btn_manual">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>40</y>
+     <width>311</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>40</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#btn_manual{
+border-image: url(:/image/버튼1.png);
+color: rgb(0, 0, 0);
+}
+
+#btn_manual::clicked{
+border-image: url(:/image/버튼2.png);
+}</string>
+   </property>
+   <property name="text">
+    <string>일반입금</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_auto">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>40</y>
+     <width>311</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>40</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#btn_auto{
+border-image: url(:/image/버튼1.png);
+color: rgb(0, 0, 0);
+}
+
+#btn_auto::clicked{
+border-image: url(:/image/버튼2.png);
+}</string>
+   </property>
+   <property name="text">
+    <string>바로입금</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_deposit">
+   <property name="geometry">
+    <rect>
+     <x>940</x>
+     <y>110</y>
+     <width>281</width>
+     <height>241</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>40</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(238, 238, 236);</string>
+   </property>
+   <property name="text">
+    <string>바로 
+입금</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>1080</x>
+     <y>60</y>
+     <width>491</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(97, 97, 97);</string>
+   </property>
+   <property name="text">
+    <string>님의 결혼식에 오신 것을 환영합니다.</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_deposit_2">
+   <property name="geometry">
+    <rect>
+     <x>890</x>
+     <y>110</y>
+     <width>281</width>
+     <height>241</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>40</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(238, 238, 236);</string>
+   </property>
+   <property name="text">
+    <string>입금</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_back">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>500</y>
+     <width>121</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/B2.png);</string>
+   </property>
+   <property name="text">
+    <string>BACK</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_clientname_3">
+   <property name="geometry">
+    <rect>
+     <x>830</x>
+     <y>50</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(97, 97, 97);</string>
+   </property>
+   <property name="text">
+    <string>신랑</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_clientname_4">
+   <property name="geometry">
+    <rect>
+     <x>830</x>
+     <y>100</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(97, 97, 97);</string>
+   </property>
+   <property name="text">
+    <string>신부</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_etc">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>250</y>
+     <width>301</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>40</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#btn_etc{
+border-image: url(:/image/버튼1.png);
+color: rgb(0, 0, 0);
+}
+
+#btn_etc::clicked{
+border-image: url(:/image/버튼2.png);
+}</string>
+   </property>
+   <property name="text">
+    <string>기타입금</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_home">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>250</y>
+     <width>311</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>40</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#btn_home{
+border-image: url(:/image/버튼3.png);
+color: rgb(0, 0, 0);
+}
+
+#btn_home::clicked{
+border-image: url(:/image/버튼6.png);
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>-40</y>
+     <width>361</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>STATUS MESSAGE</string>
+   </property>
+  </widget>
+  <zorder>btn_home</zorder>
+  <zorder>btn_manual</zorder>
+  <zorder>btn_auto</zorder>
+  <zorder>btn_deposit</zorder>
+  <zorder>label_3</zorder>
+  <zorder>btn_deposit_2</zorder>
+  <zorder>btn_back</zorder>
+  <zorder>lbl_clientname_3</zorder>
+  <zorder>lbl_clientname_4</zorder>
+  <zorder>btn_etc</zorder>
+  <zorder>label</zorder>
+  <zorder>frm_country</zorder>
+ </widget>
+ <resources>
+  <include location="image.qrc"/>
+ </resources>
+ <connections/>
+</ui>

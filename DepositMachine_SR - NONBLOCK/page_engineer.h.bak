@@ -1,0 +1,57 @@
+#ifndef PAGE_ENGINEER_H
+#define PAGE_ENGINEER_H
+
+#include <QWidget>
+
+namespace Ui {
+class page_engineer;
+}
+
+class page_engineer : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit page_engineer(QWidget *parent = 0);
+    ~page_engineer();
+
+    QTimer  *engineer_timer;
+
+private slots:
+    void set_timeout();
+
+    void on_btn_test_clicked();
+
+    void on_Btn_Deposit_clicked();
+
+    void on_Btn_Enable_clicked();
+
+    void on_Btn_Disable_clicked();
+
+    void on_Btn_IDLE_clicked();
+
+    void on_Btn_Return_clicked();
+
+    void on_Btn_Door_Lock_clicked();
+
+    void on_Btn_Door_Unlock_clicked();
+
+    void on_btn_SetCurPage_clicked();
+
+    void on_Btn_sealSeq_clicked();
+
+    void on_Btn_seal_open_clicked();
+
+    void on_Btn_Lock_close_clicked();
+
+    void on_Btn_Receipt_print_clicked();
+
+    void on_Btn_Barcode_clicked();
+
+    void on_Btn_Print_clicked();
+
+private:
+    Ui::page_engineer *ui;
+};
+
+#endif // PAGE_ENGINEER_H

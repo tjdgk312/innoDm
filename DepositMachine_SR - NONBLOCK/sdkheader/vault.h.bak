@@ -1,0 +1,559 @@
+#ifndef __INNOSTEC_VAULT_API_h__
+#define __INNOSTEC_VAULT_API_h__
+
+/*! \file vault.h
+ * \brief Api for controlling the vault and scrow box in the Vault Machine.
+ * Author: Harold L Marzan, MMC.
+ * Requested By: Metaconxept, Dopel.
+*/
+#include "currency.h"
+#include <time.h>
+
+//-------------------------------------------------------------------------------DEFINE DATA INTERFACE-----------------------------------------------------------------------------------------------------------------------------------------
+#define ACCOUNT_NUMBER_LEN	64
+
+//!Vault Machine Supported currencies
+#define VAULT_CURRENCY_TYPE_USD				CURRENCY_TYPE_USD
+#define VAULT_CURRENCY_TYPE_EUR				CURRENCY_TYPE_EUR
+#define VAULT_CURRENCY_TYPE_DOP				CURRENCY_TYPE_DOP
+#define VAULT_CURRENCY_TYPE_CAD				CURRENCY_TYPE_CAD
+
+//--------------------------------Machine Status------------------------------------------
+#define VAULT_STATUS_NO_ERROR 				0
+#define VAULT_STATUS_NO_COMM                1
+#define VAULT_STATUS_NO_NETWORK				VAULT_STATUS_NO_COMM
+#define VAULT_STATUS_SCROW_GATE_OPEN		2
+#define VAULT_STATUS_VAULT_GATE_OPEN		4
+#define VAULT_STATUS_NO_ALARM				8
+#define VAULT_STATUS_NO_FINGERPRINT			0x10
+#define VAULT_STATUS_NO_SCROW_DETECTED		0x20
+#define VAULT_STATUS_NO_BAG_DETECTED		0x40
+#define VAULT_STATUS_ERROR                  0x80
+#define VAULT_STATUS_NODATA                 0x100
+
+#define MODE_IDLE                           0
+#define MODE_DEPOSIT                        1
+#define MODE_BULK_DEPOSIT                   2
+#define MODE_DEPOSIT_CANCEL                 3
+#define MODE_DEPOSIT_COMPLETE               4
+#define MODE_TRANSCASH                      5
+#define MODE_ERRORMODE                      999
+
+// STATUS HOOK FLAG
+#define STATUS_WAITINPUT    1
+#define STATUS_COUNTSTART    2
+#define STATUS_REJECTEXIST    3
+#define STATUS_REJECTCOMPLETE    4
+#define STATUS_CANCELCOMPLETE    5
+#define STATUS_DEPOSITCOMPLETE    6
+#define STATUS_TRANSCOMPLETE    7
+#define STATUS_DURINGTRANS    8
+#define STATUS_WAITRETURN    9
+#define STATUS_TRANSIDLEMODE    10
+#define STATUS_ERROROPERATION    999
+
+// status of Current Operation Step
+typedef void (*PFN_INNOSTEC_CURRENT_STATE)(int status);
+
+void vaultSetStateEvent(PFN_INNOSTEC_CURRENT_STATE pEventHandler);
+
+
+/*********************************************************************************************************************************************************************
+ *typedef struct __tagVAULTDEPOSIT_INFO : deposit sturcture
+ *Described below
+ *********************************************************************************************************************************************************************/
+typedef struct __tagVAULTDEPOSIT_INFO{
+    time_t DepositDateTime;          // Deposit Complete Time    -  DB storage complete
+    int VaultId;                                    // Unique ID of each machine
+    int UserId;                                     // The Id of the user that performed the deposit
+    int VaultDepositId;                     //   Deposit Number - Sequential
+    int CurrencyId;                             //   CURRENCY_TYPE_DOP  = 38;
+    int DepositTypeId;                      //   setCurrentMode() at operation start        ESCROW, AUTO, ETC
+
+    int currencyUnit[12];                   // Currency country unit List (1, 5, 10, 100..)  max unit = 12
+    int currencyCount[12];                  // each count of unit
+    double currencySum[12];                 // currencyUnit * currencyCount = currencySum
+    double etcEnvelope[5];                  // When DepositTypeId = 3 (ETC)   in array  unrecBanknotes[0], coins[1], checks[2], giftCertificates[3], vouchers[4]
+    int sumCount;                                // Total count
+    double sumTotal;                        // Total amount
+}VAULTDEPOSIT_INFO, *LPVAULTDEPOSIT_INFO;
+
+/*********************************************************************************************************************************************************************
+ *typedef void (*PFN_INNOSTEC_ON_DEPOSIT_COMPLETE)(LPVAULTDEPOSIT_INFO deposit_info_ptr, int status, void* user_data);
+ * The hook used inside the Innostec SDK driver, to call registered hooks when deposit events are completed
+ * The event object with all the current deposit information
+ *********************************************************************************************************************************************************************/
+typedef void (*PFN_INNOSTEC_ON_DEPOSIT_COMPLETE)(LPVAULTDEPOSIT_INFO deposit_info_ptr,
+                                                      int status, 				  //!< The status of this deposit
+                                                      void* user_data);			  //!< A user's data passed on registration of the hook for this event
+
+
+/*********************************************************************************************************************************************************************
+ *typedef struct __tagETC_DEPOSIT_INFO : etc deposit sturcture
+ *Described below
+ *********************************************************************************************************************************************************************/
+typedef struct __tagETC_DEPOSIT_INFO
+{
+    double unrecBanknotes;          //  unrecognized Banknotes
+    double coins;                               //   coins
+    double checks;                           //   Checks
+    double giftCertificates;            //    Gift certificates
+    double vouchers;                      //    Vouchers
+}ETC_DEPOSIT_INFO, *LPETC_DEPOSIT_INFO;
+
+/*********************************************************************************************************************************************************************
+ *typedef struct __tagSETTLEMENT_SUMMARY_INFO : settlement summary sturcture
+ *Described below
+ *typedef struct __tagVAULT_SETTLEMENT_INFO : settlement sturcture
+ *It is sent as an argument to the OnSettlementCompleteEvent () function.
+ *when the SETTLEMENT operation has completed.
+ *Described below
+ *********************************************************************************************************************************************************************/
+typedef struct __tagSETTLEMENT_SUMMARY_INFO
+{
+    int DepositId;							//!< The id of the deposit
+    int CurrencyId;							//!< The id of the currency;
+    int DepositTypeId;						//!< The type of deposit (manual or automatic)
+    double transCashAmount;					//!< The total in cash
+    double transEtcAmount;                      //    unrecognized Banknotes, coins, check, Gift certificates, Vouchers  total amount
+}SETTLEMENT_SUMMARY_INFO, *LPSETTLEMENT_SUMMARY_INFO;
+
+typedef struct __tagVAULT_SETTLEMENT_INFO
+{
+    int SettlementId; 							//!< Id of the settlement before reseting the deposits in the Vault
+    int VaultId;	  							//!< The Id of the vault where the settlement is performed
+    int UserId;		  							//!< The Id of the user who performed the settlement
+    time_t DateTime;							//!< The date and time of the settlement
+    int BagId;									//!< The Id of the bag where the money will be transported
+
+    int TotalSummaryDeposits;							//!< The total deposits that existed until settlement
+    LPSETTLEMENT_SUMMARY_INFO Deposits;			//!< The deposits that existed until Settlement
+}VAULT_SETTLEMENT_INFO, *LPVAULT_SETTLEMENT_INFO;
+
+/*********************************************************************************************************************************************************************
+ *typedef void (*PFN_INNOSTEC_ON_SETTLEMENT_COMPLETE)(LPVAULT_SETTLEMENT_INFO settlement_info_ptr, int status, void* user_data);
+ * The hook used inside the Innostec SDK driver, to call registered hooks when the current deposit event are completed
+ * The event object with all the settlement (deposits' closing operation) information
+ *********************************************************************************************************************************************************************/
+typedef void (*PFN_INNOSTEC_ON_SETTLEMENT_COMPLETE)(LPVAULT_SETTLEMENT_INFO settlement_info_ptr,
+                                                      int status, 				  //!< The status of the deposits' settlement
+                                                      void* user_data);			  //!< A user's data passed on registration of the hook for this event
+
+
+/*********************************************************************************************************************************************************************
+ *typedef struct __tagVAULT_SCROW_INBOX_INFO : escrow input data structure
+ * status 0:not exist  1:exist     Same as chk_outPocket ()  return state
+ * billsCount: outpocket sum count
+ *********************************************************************************************************************************************************************/
+typedef struct __tagVAULT_SCROW_INBOX_INFO{         // status 0:not exist  1:exist  billsCount: only sum count
+    int status;	//!< the status of the scrow inbox
+    int billsCount;	//!< how many bills exist currently in the inbox
+}VAULT_SCROW_INBOX_INFO, *LPVAULT_SCROW_INBOX_INFO;
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/*********************************************************************************************************************************************************************
+ *innoSdkInit :  innostec SDK Class Init
+ *It should be called first when the equipment is started.
+ *********************************************************************************************************************************************************************/
+void innoSdkInit();
+
+int vaultGetLastError();                                                     //  needed Define Error List.
+
+
+
+//-------------------------------------------------------------------------------SET PROPERTY-----------------------------------------------------------------------------------------------------------------------------------------
+// device property setup, register function pointer and,,,
+/*********************************************************************************************************************************************************************
+ *setCurrentMode :  Communicate app behavior to device
+ *The instrument prepares the corresponding action.
+ *For example, When the user executes "Escrow deposit" trasnfer code 1 or 2  and Complete = 4
+ * int mode : Application -> Device            0: Idle, 1: Escrow mode select,  2: Bulk mode select, 3: ETC mode select, 4: Complete select, 5: Settlement select
+ * return: int       mode change status return
+ *********************************************************************************************************************************************************************/
+int setCurrentMode(int mode);
+
+/*********************************************************************************************************************************************************************
+ *setDepositCountry :  Set the machine recognized country
+ *Only once when you want to change
+ *Country code Defined in currency.h      char*  type is hexadecimal code
+ * return: void
+ *********************************************************************************************************************************************************************/
+void setDepositCountry(char *countrySel);
+void setDepositCount(char *depositCount);
+/*********************************************************************************************************************************************************************
+ * vaultSetDepositEvents()
+ * This api is used from a client to register a hook to receive events from the SDK driver, about a complete deposit
+ * return:  void
+ *********************************************************************************************************************************************************************/
+void vaultSetDepositEvents(PFN_INNOSTEC_ON_DEPOSIT_COMPLETE pEventHandler,
+                                     void* user_data	//!< a custom data object passed by the client's program, and that the Innostec must pass back when invoking the pEventHandler client's program function
+                                    );
+
+/*********************************************************************************************************************************************************************
+ * vaultSetSettlementEvents()
+ * This api is used from a client to register a hook to receive events from the SDK driver, about a complete settlement (closing operation)
+ * return:  void
+ *********************************************************************************************************************************************************************/
+void vaultSetSettlementEvents(PFN_INNOSTEC_ON_SETTLEMENT_COMPLETE pEventHandler, //!< The pointer to a client's program function that will receive when a settlement is complete
+                                   void* user_data	//!< a custom data object passed by the client's program, and that the Innostec must pass back when invoking the pEventHandler client's program function
+                                   );
+
+
+//----------------------------------------------------------------------------COMMAND DEVICE ---------------------------------------------------------------------------------------------------------------------------------------
+//   Definition required for motion control
+/*********************************************************************************************************************************************************************
+ *transUnlockDoorGate :  when settlement operation,  Request settlement door unlock
+ * return: void
+ *********************************************************************************************************************************************************************/
+void transUnlockDoorGate();
+
+/*********************************************************************************************************************************************************************
+ *transLockDoorGate :  when settlement operation,   Request settlement door lock
+ * return: void
+ *********************************************************************************************************************************************************************/
+void transLockDoorGate();
+
+/*********************************************************************************************************************************************************************
+ *vaultOpenGate :  Request open outpocket gate
+ * For example, When you want to cancel the escrow amount
+ * return:  void
+ *********************************************************************************************************************************************************************/
+void vaultOpenGate();
+
+/*********************************************************************************************************************************************************************
+ *vaultCloseGate :  Request close outpocket gate
+ * return:  void
+ *********************************************************************************************************************************************************************/
+void vaultCloseGate();
+
+/*********************************************************************************************************************************************************************
+ *vaultOpenAcceptorGate :  Request open accept gate
+ * For example, When the user executes "complete escrow deposit" escrow cash drop down the bag
+ * Currently we are doing this automatically.  below case.  (**If you want to operate it yourself?  Suggest. I will change it. )
+ * case 1: user select bulk mode -> called this function that cash be dropped immediately
+ * case 2: escrow mode is complete -> vaultOpenAcceptorGate() -> chk_outPocket() =return false -> vaultCloseAcceptorGate()
+ * return:  void
+ *********************************************************************************************************************************************************************/
+void vaultOpenAcceptorGate();
+
+/*********************************************************************************************************************************************************************
+ *vaultCloseAcceptorGate :  Request close accept gate
+ *Currently we are doing this automatically.  below case.  (**If you want to operate it yourself?  Suggest. I will change it. )
+ * For example, When all the items in the out pocket are dropped.    After checking the out-pocket sensor(chk_outPocket()) to see if it is dropping
+ * return:  void
+ *********************************************************************************************************************************************************************/
+void vaultCloseAcceptorGate();
+
+/*********************************************************************************************************************************************************************
+ *cmd_CountStart :  Send a start counting instruction to the device
+ * Currently we are doing this automatically.  below case.  (**If you want to operate it yourself?  Suggest. I will change it. )
+ * case 1: in deposit mode(1 or 2) -> chk_outPocket() = true -> cmd_CountStart()
+ *return:  void
+ *********************************************************************************************************************************************************************/
+void cmd_CountStart();
+void cmd_RequestStop();
+
+/*********************************************************************************************************************************************************************
+ *cmd_barcodeScanStart :  when change settlement bag ,  Request barcode scanning start
+ * return: void
+ *********************************************************************************************************************************************************************/
+void cmd_barcodeScanStart();
+
+/*********************************************************************************************************************************************************************
+ *cmd_fingerScanStart :  when assigned finger ,  Request finger scanning start
+ * return: void
+ *********************************************************************************************************************************************************************/
+void cmd_fingerScanStart();
+
+/*********************************************************************************************************************************************************************
+ *cmd_SettlementStart :  settlement start command
+ *result is  call OnSettlementCompleteEvent()
+ * return: void
+ *********************************************************************************************************************************************************************/
+void cmd_SettlementStart();
+
+
+
+//-------------------------------------------------------------------------------CHECK STATE----------------------------------------------------------------------------------------------------------------------------------------
+//   Definition required for sensor check control and flag check
+/*********************************************************************************************************************************************************************
+ *vaultGetStatus :  check device status
+ *Detailed Define of machine state is needed
+ * return:  int    current state index
+ *********************************************************************************************************************************************************************/
+int vaultGetStatus();
+
+/*********************************************************************************************************************************************************************
+ *get_InputState :  check escrow pocket sensor state
+ * For example, used to Cash Accept check and cancel collection complete check
+ * return:  bool    1: sensor exist  0: not exist
+ *********************************************************************************************************************************************************************/
+bool get_InputState();            // DEFINE - check hopper Input
+
+/*********************************************************************************************************************************************************************
+ *chk_outPocket :  check input slot sensor state
+ * Currently we are doing this automatically.  below case.  (**If you want to operate it yourself?  Suggest. I will change it. )
+ * case 1: in deposit mode(1 or 2) -> chk_outPocket() = true -> cmd_CountStart()
+ *return:  bool    1: sensor exist  0: not exist
+ *********************************************************************************************************************************************************************/
+bool chk_outPocket();
+
+/*********************************************************************************************************************************************************************
+ *chk_rejectPocket :  check reject slot sensor state
+ * Reject pocket sensor check (Unrecognized bills)
+ * case 1: countcomplete -> chk_rejectPocket() = true -> Remove the banknote from the pocket(User) -> Continue to deposit
+ *return:  bool    1: sensor exist  0: not exist
+ *********************************************************************************************************************************************************************/
+bool chk_rejectPocket();
+
+/*********************************************************************************************************************************************************************
+ *get_doorOpenState :  when Request barcode scanning start ,   check door Unlock state
+ * return:  bool   1: door is unlock
+ *********************************************************************************************************************************************************************/
+bool get_doorOpenState();
+
+/*********************************************************************************************************************************************************************
+ *get_doorCloseState :  when Request barcode scanning start ,   check door Lock state
+ * return:  bool   1: door is lock
+ *********************************************************************************************************************************************************************/
+bool get_doorCloseState();
+
+/*********************************************************************************************************************************************************************
+ *chk_KeySenState :  check key Sensor state
+ * return:  bool   0: key is unlock   1: key is lock
+ *********************************************************************************************************************************************************************/
+bool chk_KeySenState();
+
+/*********************************************************************************************************************************************************************
+ *chk_doorSenState :  check door Sensor state
+ * return:  bool   0: door is closed  1: door is opened
+ *********************************************************************************************************************************************************************/
+bool chk_doorSenState();
+
+/*********************************************************************************************************************************************************************
+ *chk_bagChangeState :  check barcode check state
+ * return:  bool   0: bag barcode no change  1: bag barcode change
+ *********************************************************************************************************************************************************************/
+bool chk_bagChangeState();
+
+
+/*********************************************************************************************************************************************************************
+ *chk_fingerState :  check barcode check state
+ * return:  int   0: no change  1: finger Indentify 2: Not Found 3: Time out
+ *********************************************************************************************************************************************************************/
+int chk_fingerState();
+
+/*********************************************************************************************************************************************************************
+ *get_CountState :  counting flag
+ *When the counting operation
+ * return:  bool    0: not counting  1: counting
+ *********************************************************************************************************************************************************************/
+bool get_CountingState();
+
+
+/*********************************************************************************************************************************************************************
+ *get_CountState :  count complete flag
+ *When the counting operation is complete.
+ * Currently, we check and call the preset OnDepositCompleteEvent ().    (**If you want to operate it yourself?  Suggest. I will change it. )
+ * return:  bool    0: not complete  1: complete
+ *********************************************************************************************************************************************************************/
+bool get_CountState();
+
+
+//-------------------------------------------------------------------------------GET INFORMATION------------------------------------------------------------------------------------------------------------------------------------
+//   Definition required for Saved information
+
+/*********************************************************************************************************************************************************************
+ *vaultGetCurrentUser :  Get the current user name
+ * return:  void
+ *********************************************************************************************************************************************************************/
+void vaultGetCurrentUser(char* buffUser, int len);
+
+/*********************************************************************************************************************************************************************
+ *vaultGetScrowInboxInfo :  Get scrow inbox information
+ * return:  void
+ *********************************************************************************************************************************************************************/
+void vaultGetScrowInboxInfo(LPVAULT_SCROW_INBOX_INFO scrowInfo);    // DEFINE - inbox count state data
+
+/*********************************************************************************************************************************************************************
+ *vaultGetLastAmountDeposited :  Get the total amount of the last deposit operation  in DATABASE
+ * return:  double  = last deposit amount
+ *********************************************************************************************************************************************************************/
+double vaultGetLastAmountDeposited();
+
+/*********************************************************************************************************************************************************************
+ *vaultGetLastCurrencyID :  Get the currency of the last deposit operation  in DATABASE
+ * return:  double  = last deposit currencyID
+ *********************************************************************************************************************************************************************/
+int vaultGetLastCurrencyID();
+
+/*********************************************************************************************************************************************************************
+ *vaultGetDepositList :  current last deposit operation
+ *Currently, we check and call the preset OnDepositCompleteEvent().    (**If you want to operate it yourself?  Suggest. I will change it. )
+ * return:  double  = last deposit amount
+ *********************************************************************************************************************************************************************/
+LPVAULTDEPOSIT_INFO vaultGetDepositList();
+
+/*********************************************************************************************************************************************************************
+ *vaultSetEtcDepositInfo :  Set etc deposit information
+ *App -> SDK(Device)   transfer ETC deposit envelope data
+ *return:  void
+ *********************************************************************************************************************************************************************/
+void vaultSetEtcDepositInfo(LPETC_DEPOSIT_INFO pEtc_info);     //   App -> SDK(Device)   transfer ETC deposit envelope data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------------------Hold---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#define VAULT_STATUS_MSG_LEN 256
+
+//!Holds information about the vault status
+typedef struct __tagVAULT_STATUS_INFO {
+    int status;
+    char status_msg[VAULT_STATUS_MSG_LEN + 1];
+
+}VAULT_STATUS_INFO, *LPVAULT_STATUS_INFO;
+
+//!Get more information about the current status
+void vaultGetStatusInfo(VAULT_STATUS_INFO* pvault_info);     //   Messages about the state should be created in the application.
+
+//!Get the transactionId from the last deposit operation
+int vaultGetLastTransactionID();
+
+//!Get the current vault machine Id
+int vaultGetVaultID();
+
+//!Holds information about a transaction inside a deposit operation
+typedef struct __tagVAULT_TRANSACTION_INFO{
+	int TransactionId;		//!< The Id of the transaction 
+	int VaultDepositId;		//!< The Id of the deposit to which this transaction belongs to
+	int VaultUserId;		//!< The Id of the user that performed the deposit operation
+	int VaultId;			//!< The Id of the current vault machine where the deposit was performed
+
+	int CurrencyId;			//!< The Id of the currency of the bills in this transaction
+	int Denomination;		//!< The denomination of bills in this transaction (1, 5, 10, 100, etc)
+	int Quantity;			//!< The quantity of bills of the same denomination
+    char AccountNumber[ACCOUNT_NUMBER_LEN + 1]; //!< The account number that will be affected with the deposit
+
+    time_t TransactionDateTime; //!< The date and time of the transaction (may be the same as the DepositDateTime)
+	
+}VAULT_TRANSACTION_INFO, *LPVAULT_TRANSACTION_INFO;
+
+//!Get an array of the transactions belonging to the specified deposit Id
+LPVAULT_TRANSACTION_INFO vaultGetTransactionList(int VaultDepositId, int* plen);
+
+//!Get the first transaction in the specified deposit
+LPVAULT_TRANSACTION_INFO vaultGetFirstTransaction(int VaultDepositId);
+//!Get the last transaction in the specified deposit
+LPVAULT_TRANSACTION_INFO vaultGetLastTransaction(int VaultDepositId);
+
+//!Get the transaction in the specified deposit, and in the specified index position
+LPVAULT_TRANSACTION_INFO vaultGetTransaction(int VaultDepositId, int index);
+
+typedef enum __tagVAULT_DEPOSIT_DENOMINATION_TYPE{
+	VAULT_DEPOSIT_DENOMINATION_CASH		= 1,
+	VAULT_DEPOSIT_DENOMINATION_CHECK	= 2,
+	VAULT_DEPOSIT_DENOMINATION_COIN		= 4,
+}VAULT_DEPOSIT_DENOMINATION_TYPE;
+
+#define VAULT_DEPOSIT_STATUS_SYNC_PENDING	1
+#define VAULT_DEPOSIT_STATUS_SYNCED			2
+
+//!Holds information about a deposit operation
+typedef struct __tagVAULT_DEPOSIT_INFO{
+	time_t DepositDateTime;	//!< The date and time of the deposit (may be the same as the TransactionDateTime)
+
+    int VaultId;			//!< The Id of the current vault machine where the deposit was performed		     // Unique ID of each machine?
+    int UserId;				//!< The Id of the user that performed the deposit
+	
+    int VaultDepositId;		//!< The Id of the deposit operation
+
+    int CurrencyId;			//!< The Id of the currency of the bills in this deposit	       //  this is   ex) CURRENCY_TYPE_EUR ??
+
+	int DepositTypeId;		//!< The Id of the type of this deposit (manual or automatic)
+	
+    int ReferenceNumber;	//!< A user's reference number                                                          //???????????????????????
+	
+	double TotalCashAmount;		//!< The sum of Tx.Denomination * Tx.Quantity from all Tx (Transactions)
+	
+	double TotalCheckAmount;	//!< The amount in the deposited check (For manual deposits only).
+	
+    int TotalDenominations;	//!< The total number of transactions existing in this deposit operation                // check Reference ↑
+	
+	LPVAULT_TRANSACTION_INFO Denominations; //!< The transactions (denominations) inside a deposit
+	
+	VAULT_DEPOSIT_DENOMINATION_TYPE DenominationTypes; //!< A combination of types of denominations in this deposit.
+
+	int DepositStatus; 		//!< The status of the deposit (sync-pending, synced)
+	
+}VAULT_DEPOSIT_INFO, *LPVAULT_DEPOSIT_INFO;
+
+//!Get the deposits in the specified datetime
+LPVAULT_DEPOSIT_INFO vaultGetDepositList(time_t DepositDateTime, int *plen);
+
+//!Get the deposit for the specified Id
+LPVAULT_DEPOSIT_INFO vaultGetDepositInfo(int VaultDepositId);
+
+//!Get the last deposit
+LPVAULT_DEPOSIT_INFO vaultGetLastDepositInfo();
+
+
+//!Get the deposit amount of the last deposit operation
+double vaultGetLastDepositAmount();
+
+//!Get the account number of the last deposit operation
+void vaultGetLastAccountNumber(char* buffAccount, int len);
+
+//!Creates a manual deposit, and becomes the current deposit
+LPVAULT_DEPOSIT_INFO vaultCreateDeposit(int VaultId, int UserId, char *AccountNumber);
+
+//!Adds a manual denomination/transaction to the specified deposit
+int vaultAddTransaction(int VaultDepositId,	//!< The Id of the specified deposit
+						int CurrencyId,			//!< The Id of the currency of the bills in this transaction
+						int Denomination,		//!< The denomination of bills in this transaction (1, 5, 10, 100, etc)
+						int Quantity			//!< The quantity of bills of the same denomination
+						);
+
+//!Same as vaultAddTransaction (manual)
+int vaultAddDenomination(int VaultDepositId,	//!< The Id of the specified deposit
+						int CurrencyId,			//!< The Id of the currency of the bills in this transaction
+						int Denomination,		//!< The denomination of bills in this transaction (1, 5, 10, 100, etc)
+						int Quantity			//!< The quantity of bills of the same denomination
+						);
+
+//!Adds a manual denomination/transaction to the specified deposit info
+int vaultAddTransactionEx(LPVAULT_DEPOSIT_INFO deposit_info_ptr, 	//!< A pointer to the deposit info
+						int CurrencyId,			//!< The Id of the currency of the bills in this transaction
+						int Denomination,		//!< The denomination of bills in this transaction (1, 5, 10, 100, etc)
+						int Quantity			//!< The quantity of bills of the same denomination
+						);
+						
+//!Same as vaultAddTransactionEx (manual)
+int vaultAddDenominationEx(LPVAULT_DEPOSIT_INFO deposit_info_ptr, 	//!< A pointer to the deposit info
+						int CurrencyId,			//!< The Id of the currency of the bills in this transaction
+						int Denomination,		//!< The denomination of bills in this transaction (1, 5, 10, 100, etc)
+						int Quantity			//!< The quantity of bills of the same denomination
+						);
+
+
+
+#endif //__INNOSTEC_VAULT_API_h__
+

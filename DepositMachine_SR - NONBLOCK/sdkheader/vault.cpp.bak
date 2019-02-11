@@ -1,0 +1,366 @@
+#include "vault.h"
+#include "sdk_global.h"
+
+void innoSdkInit()
+{
+    pMain = new InnoSDK();
+}
+
+int vaultGetStatus()
+{
+    return pMain->currentState;
+}
+
+int vaultGetLastError()
+{
+    return pMain->errorStateCode;
+}
+
+void setDepositCountry(char *countrySel)
+{
+    QString tmpStr = countrySel;
+    pMain->currentCurrencyId = tmpStr.toInt();
+    QByteArray tmpArr;
+    tmpArr.append(countrySel);
+    pMain->m_stateThread->transaction(CMD_CURRENCY_STATE_DATA2,tmpArr);
+    pMain->setCountryUnitList(tmpStr.toInt());
+}
+
+void setDepositCount(char *depositCount)
+{
+    QString tmpStr = depositCount;
+    QString countryStr = tmpStr.mid(0,2);
+    pMain->currentCurrencyId = countryStr.toInt();
+    QByteArray tmpArr;
+    tmpArr.append(depositCount);
+    qDebug()  << tmpArr;
+    pMain->m_stateThread->transaction(CMD_CURRENCY_CHANGE,tmpArr);
+    pMain->setCountryUnitList(countryStr.toInt());
+
+    pMain->currentStep = DEPOSIT_WAITINPUT;
+    pMain->waitCnt = 2;
+}
+
+//--------------------------------------입금관련-----------------------------------------
+int setCurrentMode(int mode)
+{
+    int status = 0;
+    switch(mode){
+    case MODE_IDLE:
+        // **모드 변경 시 포켓, 상태 체크하여 불가능 이벤트를 날려 주어야 함
+        pMain->init_DepositStr();
+        pMain->m_stateThread->setSensor(CUR_SEN);
+        if(pMain->currentMode == 1 || pMain->currentMode == 2){
+            // 대기모드 자동전환
+            pMain->preMode = pMain->currentMode;
+            pMain->currentStep = IDLE_GATECLOSECHK;
+            pMain->m_stateThread->transaction(CMD_IDLE,"");
+        }
+        else if(pMain->currentMode == 3){                       // 입금동작 취소 일 경우에
+            pMain->preMode = pMain->currentMode;
+            pMain->currentStep = IDLE_GATECLOSECHK;
+            pMain->m_stateThread->transaction(CMD_IDLE,"");
+        }
+        else if(pMain->currentMode == 4){                       // 완료동작 후 IDLE 전환
+            pMain->m_stateThread->transaction(CMD_IDLE,"");
+            pMain->pStatusFunc(STATUS_DEPOSITCOMPLETE);
+            qDebug() << "set mode idle complete!!!";
+        }
+        else if(pMain->currentMode == 5){                       // 완료동작 후 IDLE 전환
+            pMain->m_stateThread->transaction(CMD_IDLE,"");
+//            pMain->pStatusFunc(STATUS_TRANSCOMPLETE);
+        }
+        pMain->currentMode = mode;
+        break;
+
+    case MODE_DEPOSIT:
+        pMain->m_stateThread->setSensor(CUR_SEN);
+        pMain->currentStep = DEPOSIT_WAITINPUT;
+
+        if(pMain->currentMode == MODE_IDLE){
+            qDebug() << "start escrow deposit mode";
+//            pMain->operationStart();
+        }
+        pMain->currentMode = mode;
+        break;
+
+    case MODE_BULK_DEPOSIT:
+        pMain->m_stateThread->setSensor(CUR_SEN);
+        pMain->currentStep = DEPOSIT_WAITINPUT;
+
+        if(pMain->currentMode == 0){
+            qDebug() << "start bulk deposit mode";
+//            pMain->operationStart();
+        }
+        pMain->m_stateThread->transaction(CMD_BULK_DEPOSIT,"");
+        pMain->currentMode = mode;
+        break;
+
+    case MODE_DEPOSIT_CANCEL:
+        pMain->m_stateThread->setSensor(CUR_SEN);
+        pMain->m_stateThread->transaction(CMD_RETURN,"");
+        pMain->currentMode = mode;
+        pMain->currentStep = CANCEL_GATEOPENCHK;
+        pMain->retryCnt = 5;       // 5회 재시도
+        pMain->waitCnt = 10;
+        // HOOK return check
+        break;
+
+    case MODE_DEPOSIT_COMPLETE:
+        pMain->m_stateThread->setSensor(CUR_SEN);
+        if(pMain->currentMode == 1 || pMain->currentMode == 2){ // 입금동작 완료 일 경우에
+            qDebug() << "set mode complete!!!";
+            pMain->m_stateThread->transaction(CMD_DEPOSIT,"");
+            pMain->retryCnt = 5;       // 5회 재시도
+            pMain->waitCnt = 20;       // 4초 대기
+            pMain->depositOperationComplete();      // DB 저장함수
+            pMain->currentMode = mode;
+            pMain->currentStep = COMPLETE_GATEOPENCHK;
+        }
+        else if(pMain->currentMode == 5){    // later 현송후 상태 점검 한번 해야할듯...
+            setCurrentMode(0);
+        }
+        break;
+    case MODE_TRANSCASH:
+//        pMain->m_stateThread->setSensor(DOOR_SEN);
+        pMain->pStatusFunc(STATUS_DURINGTRANS);
+        // HOOK transcash waiting
+        if(pMain->currentMode == 0){
+            qDebug() << "start settlement mode";
+            cmd_SettlementStart();
+            pMain->transStep = 1;          // wait seal complete
+        }
+        pMain->currentMode = mode;
+        break;
+    }
+
+    return status;
+}
+
+void vaultOpenGate()
+{
+    pMain->m_stateThread->transaction(CMD_OUTGATE_OPEN,"");
+}
+
+void vaultCloseGate()
+{
+    pMain->m_stateThread->transaction(CMD_OUTGATE_CLOSE,"");
+}
+
+void vaultOpenAcceptorGate()
+{
+    pMain->m_stateThread->transaction(CMD_DEPOSIT,"");
+}
+
+bool chk_outPocket()
+{
+    return pMain->tCurrSen.stacker;
+}
+
+void vaultGetScrowInboxInfo(LPVAULT_SCROW_INBOX_INFO scrowInfo)
+{
+    if(pMain->tCurrSen.stacker) {      // 아웃포켓 상태체크
+        scrowInfo->status = pMain->tCurrSen.stacker;
+    }
+    int sumCount = 0;
+    for(int i=0; i<12; i++){
+        sumCount += pMain->tNoteData.nData[i];
+    }
+    scrowInfo->billsCount = sumCount;
+}
+
+double vaultGetLastAmountDeposited()
+{
+    QVariant buf[10];
+    pMain->pDatabase->db.setDatabaseName(PATH_DEPOSIT);
+    pMain->pDatabase->db.open();
+//    SELECT * FROM USER WHERE userName = 'sungha' ORDER BY expiresDateTime DESC LIMIT 1
+    int result = pMain->pDatabase->SelectRecordOrder("DEPOSITLIST","sumTotal","ORDER BY DepositDateTime DESC LIMIT 1",buf);
+    double resultSum = 0;
+    if(result){
+        resultSum = buf[0].toDouble();
+    }
+    return resultSum;
+    // DB 에서 가장 마지막 데이터 읽어서 총금액 리턴
+}
+
+bool get_CountState()
+{
+    qDebug() << "called countstate - " << pMain->fCountStart;
+    bool retTemp = pMain->fCountStart;
+    if(pMain->fCountStart){
+        pMain->fCountStart = 0;
+        return retTemp;
+    }
+    else{
+        return pMain->fCountStart;
+    }
+}
+
+bool get_InputState()
+{
+    return pMain->tCurrSen.hopper;
+}
+
+void cmd_CountStart()
+{
+//    if(pMain->loginState){
+//        if(role==13 || role==2047){
+//            pMain->m_stateThread->transaction(CMD_CURRENCY_START,"");
+//        }
+//    }
+    pMain->currentStep = DEPOSIT_WAITINPUT;
+}
+void cmd_RequestStop(){
+    pMain->currentStep = DEPOSIT_IDLE;
+    pMain->m_stateThread->transaction(CMD_CURRENCY_COUNT_STOP,"");
+}
+
+
+LPVAULTDEPOSIT_INFO vaultGetDepositList()
+{
+    return pMain->deposit_data;
+}
+
+void vaultCloseAcceptorGate()
+{
+    pMain->m_stateThread->transaction(CMD_IDLE,"");
+}
+
+
+LPVAULT_DEPOSIT_INFO vaultGetDepositList(time_t DepositDateTime, int *plen)
+{
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//void vaultGetStatusInfo(VAULT_STATUS_INFO *pvault_info)
+//{
+//    char *msg = pMain->getStatusMessage(pMain->currentState);
+//    pvault_info->status = pMain->currentState;
+//    memcpy(pvault_info->status_msg, msg, sizeof(msg));
+//}
+
+
+
+int vaultGetLastTransactionID()
+{
+    return 0;
+}
+
+void transUnlockDoorGate()
+{
+    pMain->m_stateThread->transaction(CMD_DOOR_UNLOCK,"");
+}
+
+void transLockDoorGate()
+{
+    pMain->m_stateThread->transaction(CMD_DOOR_LOCK,"");
+}
+
+bool get_doorOpenState()
+{
+    return pMain->fDoorOpen;
+}
+
+bool get_doorCloseState()
+{
+    return pMain->fDoorClose;
+}
+
+bool chk_KeySenState()
+{
+    return pMain->m_stateThread->SenDoorKey;
+}
+
+bool chk_doorSenState()
+{
+    return pMain->m_stateThread->SenDoorState;
+}
+
+bool chk_bagChangeState(){
+    qDebug() << "called barcode change state - " << pMain->preBagCode << pMain->currentBagCode;
+    if(pMain->preBagCode != pMain->currentBagCode){
+        pMain->preBagCode = pMain->currentBagCode;
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+int chk_fingerState(){
+//    qDebug() << "called Finger state - " << pMain->fingerState ;
+
+    return pMain->fingerState;
+}
+
+void cmd_SettlementStart()
+{
+    pMain->m_stateThread->transaction(CMD_WS_SATRT,"");
+}
+
+void cmd_barcodeScanStart()
+{
+    uint32_t   sendCmd = CMD_BARCODE_ON;
+    pMain->m_stateThread->transaction(sendCmd,"3");    // 3 is retry count.
+}
+void cmd_fingerScanStart()
+{
+    uint32_t   sendCmd = CMD_FINGER_IDT;
+    pMain->m_stateThread->transaction(sendCmd,"3");    // 3 is retry count.
+    pMain->fingerState = 0;
+
+}
+
+
+void vaultGetCurrentUser(char *buffUser, int len)
+{
+    buffUser = const_cast<char*>(pMain->currentLogUser);
+    len = sizeof(pMain->currentLogUser);
+}
+
+int vaultGetLastCurrencyID()
+{
+    QVariant buf[10];
+    pMain->pDatabase->db.setDatabaseName(PATH_DEPOSIT);
+    pMain->pDatabase->db.open();
+//    SELECT * FROM USER WHERE userName = 'sungha' ORDER BY expiresDateTime DESC LIMIT 1
+    int result = pMain->pDatabase->SelectRecordOrder("DEPOSITLIST","CurrencyId","ORDER BY DepositDateTime DESC LIMIT 1",buf);
+    double resultSum = 0;
+    if(result){
+        resultSum = buf[0].toInt();
+    }
+    return resultSum;
+}
+
+void vaultSetDepositEvents(PFN_INNOSTEC_ON_DEPOSIT_COMPLETE pEventHandler, void *user_data)
+{
+    pMain->pDepositFunc = pEventHandler;
+    pMain->my_data_ptr = user_data;
+}
+
+void vaultSetSettlementEvents(PFN_INNOSTEC_ON_SETTLEMENT_COMPLETE pEventHandler, void *user_data)
+{
+    pMain->pSettlementFunc = pEventHandler;
+    pMain->my_stdata_ptr = user_data;
+}
+
+bool get_CountingState()
+{
+    return pMain->fCountStart;
+}
+
+bool chk_rejectPocket()
+{
+    if(pMain->tCurrSen.reject_f || pMain->tCurrSen.reject_r){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+void vaultSetStateEvent(PFN_INNOSTEC_CURRENT_STATE pEventHandler)
+{
+    pMain->pStatusFunc = pEventHandler;
+}

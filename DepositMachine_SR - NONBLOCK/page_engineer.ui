@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>page_engineer</class>
+ <widget class="QWidget" name="page_engineer">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QPushButton" name="btn_test">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>0</y>
+     <width>201</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Return Main Page</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_Door_Unlock">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>250</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Door UnLock</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_Lock_close">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>170</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Lock Close</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_note_1">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>30</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_Enable">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>260</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Enable</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_note_3">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>70</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_sealSeq">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>90</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Seal Sequence
+ WS_START</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_note_2">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>50</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_seal_open">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>90</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Seal Open</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_Door_Lock">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>250</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Door Lock</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_Disable">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>260</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Disable</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_note_0">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>10</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_SetCurPage">
+   <property name="geometry">
+    <rect>
+     <x>-210</x>
+     <y>90</y>
+     <width>201</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Currency Set</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="fdoorLock">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>460</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="doorClose">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>460</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="doorOpen">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>460</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="fDoorUnlock">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>460</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_note_4">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>440</y>
+     <width>91</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">doorOpen</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_note_5">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>440</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">doorClose</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_note_6">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>440</y>
+     <width>81</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">fDoorUnlock</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_note_7">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>440</y>
+     <width>81</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">fDoorLock</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_Barcode">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>10</y>
+     <width>131</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Barcode cmd</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_Print">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>10</y>
+     <width>131</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Print Test</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_FingerEnroll">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>10</y>
+     <width>131</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">FingerScanner
+Enroll</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_seal_close">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>90</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Seal Close</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_Lock_open">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>170</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Lock Open</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_CardRead">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>170</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">CARD READ</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="cardData">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>250</y>
+     <width>131</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+    </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_outOpen">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>100</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Out Open</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_inClose">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>180</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">In Close</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_inOpen">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>180</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">In Open</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_outClose">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>100</y>
+     <width>130</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Out Close</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_blClose">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>340</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">Bl Close</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_blOpen">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>340</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">BL Open</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>330</y>
+     <width>281</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QComboBox" name="combo_sen">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>261</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QComboBox QAbstractItemView::item { 
+background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+} 
+</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>OutOpenDelay</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>OutCloseDelay</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>InOpenDelay</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>InCloseDelay</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>LockOpenDelay</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>LockCloseDelay</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>SealOpenDelay</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>SealCloseDelay</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>BlockOpenDelay</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>BlockCloseDelay</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="btn_SensorDelay">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>60</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string notr="true">SET DELAY</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edit_value">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>113</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255,0);
+border: 1px solid black;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_value">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>111</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+border:none;
+background-color: rgb(255, 255, 255,0);}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="lbl_doorsen">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>300</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+    </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_note_8">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>280</y>
+     <width>131</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">Door SenChk</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_DoorChk">
+   <property name="geometry">
+    <rect>
+     <x>389</x>
+     <y>330</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">DOOR_CHK</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_upsState">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>340</y>
+     <width>91</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">ups state</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Btn_upsOff">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>400</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/base7.png);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string notr="true">ups off</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_upsState">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>400</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+    </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string notr="true">0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

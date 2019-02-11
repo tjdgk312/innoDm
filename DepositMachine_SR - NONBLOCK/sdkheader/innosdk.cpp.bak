@@ -1,0 +1,784 @@
+#include "innosdk.h"
+#include "device/statethread.h"
+#include "sdk_global.h"
+
+InnoSDK *pMain;
+
+InnoSDK::InnoSDK(QWidget *parent)
+{
+    qDebug() << "init SDK class222";
+
+    // DB 객체 생성 및 init
+    pDatabase = new DatabaseManager();
+
+    deposit_data = &depositStr;
+    init_DepositStr();
+
+    settle_data = &settleStr;
+
+    // 기계번호 등록
+    // 스크립트 읽어서 기계시리얼 확인 필요 또는 사용자 등록
+    currentVaultID = 201801001;
+    // 입금번호 등록
+    // DB마지막 레코드 읽어서 1번호씩 추가
+    currentVaultDepositId = 0;
+
+
+    // test path
+    //---------------------------------------------------------USER INFO DATABASE------------------------------------------------------
+    pDatabase->OpenDatabase(PATH_USER);
+    qDebug() << "create USER_DB idle";
+    if(!pDatabase->db.tables().contains("USER")){             // 유저테이블 확인 후 생성
+        qDebug() << "create table user";
+        QString query = "USER (clientName VARCHAR(255), userFullName VARCHAR(255), userName VARCHAR(255), password VARCHAR(255),"
+                        "roles INT, UserId INT, expiresDateTime INT, creationDateTime INT, lastDepositDateTime INT, Status BOOL)";
+        pDatabase->CreateTable(query);
+    }
+    if(!pDatabase->db.tables().contains("INFO")){             // 유저테이블 확인 후 생성
+        qDebug() << "create table user";
+        QString query = "INFO (VaultId INT, BagId INT, SettlementId INT, SpareInt1 INT, SpareInt2 INT,"
+                        "SdkVersion VARCHAR(255), SpareChar1 VARCHAR(255), SpareChar2 VARCHAR(255), SpareBool1 BOOL, SpareBool2 BOOL)";
+        pDatabase->CreateTable(query);
+
+        // 스크립트 읽어오고 기계버젼 찾아서 레코드 생성
+    }
+
+    //---------------------------------------------------------DEPOSIT DATABASE------------------------------------------------------
+    pDatabase->OpenDatabase(PATH_DEPOSIT);
+    qDebug() << "create DEPOSIT_DB idle";
+    if(!pDatabase->db.tables().contains("DEPOSITLIST")){             // 유저테이블 확인 후 생성
+        qDebug() << "create table user";
+        QString query = "DEPOSITLIST (DepositDateTime INT, VaultId INT, UserId INT, VaultDepositId INT,"
+                        "CurrencyId INT, DepositTypeId INT, currencyUnit VARCHAR(255), currencyCount VARCHAR(255),"
+                        "currencySum VARCHAR(255), etcEnvelope VARCHAR(255), sumCount INT, sumTotal DOUBLE)";
+        pDatabase->CreateTable(query);
+    }
+
+    if(!pDatabase->db.tables().contains("SETTLELIST")){             // 유저테이블 확인 후 생성
+        qDebug() << "create table user";
+        QString query = "SETTLELIST (SettlementId INT, BagId INT, VaultId INT, SettlementDateTime INT,"
+                        "depositCount INT, transCashAmount DOUBLE, transEtcAmount DOUBLE)";
+        pDatabase->CreateTable(query);
+    }
+
+    init_countryUnit();
+    init_serial();
+    retryCnt = 0;
+    waitCnt = 0;
+    loginState = false;
+
+    currentMode = MODE_IDLE;
+    currentStep = IDLE_NORMALSTATE;
+
+    currentState = 0;
+    errorStateCode = 0;
+    m_stateThread->transaction(CMD_IDLE,"");
+    m_stateThread->setSensor(CUR_SEN);
+
+    // 바코드 인식에 대한 리턴을 주기 위함
+    barcodeChanged = 0;
+    preBagCode = 000001;                // 처음에 DB에서 받아와야 함
+    currentBagCode = 000001;
+
+    // Finger test
+    fingerState = 0;
+
+    //메인 타이머 설정
+    pMain_timer = new QTimer(this);
+    connect(pMain_timer, SIGNAL(timeout()),this,SLOT(main_timer_event()));
+    pMain_timer->start(200);
+
+    tCurrSen.stacker = 0;
+
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+void InnoSDK::init_countryUnit(){
+    QList<int>tmpList[100];
+    tmpList[0] << 20 << 50 << 100 << 200 << 500 << 1000 << 2000;
+    unitMap.insert(38,tmpList[0]);
+    tmpList[1] << 1000 << 5000 << 10000 << 50000;
+    unitMap.insert(03,tmpList[1]);
+}
+
+void InnoSDK::init_DepositStr(){
+    qDebug() << "initialize SDK Deposit struct";
+    deposit_data->sumCount = 0;
+    deposit_data->sumTotal = 0;
+    for(int i=0; i<12; i++){
+        if(i<5){
+            deposit_data->etcEnvelope[i] = 0;
+        }
+        deposit_data->currencyUnit[i] = 0;
+        deposit_data->currencyCount[i] = 0;
+        deposit_data->currencySum[i] = 0;
+    }
+}
+
+//void InnoSDK::getCurrentTime(){
+
+//}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+void InnoSDK::countCompleteSignal(int status){
+    currentVaultDepositId += 1;         // 입금번호
+
+    deposit_data->DepositDateTime = QDateTime::currentDateTime().toTime_t();
+    deposit_data->VaultId = currentVaultID;
+    deposit_data->UserId = currentUserId;
+    deposit_data->VaultDepositId = currentVaultDepositId;
+    deposit_data->CurrencyId = currentCurrencyId;
+    deposit_data->DepositTypeId = currentMode;
+    deposit_data->sumCount = 0;
+    deposit_data->sumTotal = 0;
+    for(int i=0; i<12; i++){
+        if(i < currentCountryList.count()){
+            deposit_data->currencyUnit[i] = currentCountryList.at(i);
+        }
+        else{
+            deposit_data->currencyUnit[i] = 0;
+        }
+        qDebug() << "deposit array: " <<pMain->tNoteData.nData[i] << deposit_data->currencyUnit[i];
+        if(currentMode == 1){                             // Normal Mode일때는 데이터 그대로 처리
+            deposit_data->currencyCount[i] = pMain->tNoteData.nData[i];
+            deposit_data->currencySum[i] = deposit_data->currencyUnit[i] * deposit_data->currencyCount[i];
+        }
+        else if(currentMode == 2){                          // Bulk Mode 일때는 이전데이터 카운트 합산해서 처리
+            deposit_data->currencyCount[i] += pMain->tNoteData.nData[i];
+            deposit_data->currencySum[i] = deposit_data->currencyUnit[i] * deposit_data->currencyCount[i];
+        }
+        deposit_data->sumCount += deposit_data->currencyCount[i];
+        deposit_data->sumTotal += deposit_data->currencySum[i];
+    }
+    if(deposit_data->sumCount == 0){
+        status = VAULT_STATUS_NODATA;
+        currentStep = DEPOSIT_WAITINPUT;
+    }
+
+
+    // status 에 계수된 데이터 유무 정보 포함   for test = 1
+    pDepositFunc(deposit_data, status, my_data_ptr);                                         // 훅 이벤트 호출
+}
+//--------------------------------------------------------------------------------------------------------------------------------------
+void InnoSDK::settlementCompleteSignal(int status){
+    pSettlementFunc(settle_data, status, my_stdata_ptr);
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+void InnoSDK::depositCompleteSignal()
+{
+//    for(int i=0; i<12; i++){
+//        deposit_data->currencyUnit[i] = 0;
+//        deposit_data->currencyCount[i] = 0;
+//        deposit_data->currencySum[i] = 0;
+//    }
+
+    // DB저장 코드 구현해야 함
+}
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+void InnoSDK::operationStart(){             // 모든 동작 시작
+    m_stateThread->transaction(CMD_CURRENCY_START,"");
+}
+//--------------------------------------------------------------------------------------------------------------------------------------
+void InnoSDK::setCountryUnitList(int code)
+{
+    // for test
+    currentCountryList = unitMap.value(code);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+void InnoSDK::depositOperationComplete()
+{
+    QString unitArr, countArr, sumArr, etcArr;
+
+    etcArr.append(QString("%1").arg(deposit_data->etcEnvelope[0]));
+    unitArr.append(QString("%1").arg(deposit_data->currencyUnit[0]));
+    countArr.append(QString("%1").arg(deposit_data->currencyCount[0]));
+    sumArr.append(QString("%1").arg(deposit_data->currencySum[0]));
+    for(int i=1; i<12; i++){
+        if(i<5){
+            etcArr.append(QString(",%1").arg(deposit_data->etcEnvelope[i]));
+        }
+        if(i<12){
+            unitArr.append(QString(",%1").arg(deposit_data->currencyUnit[i]));
+            countArr.append(QString(",%1").arg(deposit_data->currencyCount[i]));
+            sumArr.append(QString(",%1").arg(deposit_data->currencySum[i]));
+        }
+    }
+
+    pMain->pDatabase->db.setDatabaseName(PATH_DEPOSIT);
+    pMain->pDatabase->db.open();
+    pMain->pDatabase->InsertRecord("DEPOSITLIST", QString("%1, %2, %3, %4, %5, %6, '%7', '%8', '%9', '%10', %11, %12").arg(deposit_data->DepositDateTime).
+                                   arg(deposit_data->VaultId).arg(deposit_data->UserId).arg(deposit_data->VaultDepositId).arg(deposit_data->CurrencyId).
+                                   arg(deposit_data->DepositTypeId).arg(unitArr).arg(countArr).arg(sumArr).arg(etcArr).arg(deposit_data->sumCount).arg(deposit_data->sumTotal));
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------
+void InnoSDK::main_timer_event(){
+    int status = 0;
+
+//    qDebug() << "currentStep" << currentStep << currentMode;
+    //    qDebug() << "door key sen" << pMain->m_stateThread->SenDoorKey;
+    //    qDebug() << "door sen" << pMain->m_stateThread->SenDoorState;
+    //    qDebug() << "fdoor Unlock" << pMain->m_stateThread->fDoorUnlock;
+    //    qDebug() << "fdoor Lock" << pMain->m_stateThread->fDoorLock;
+
+    //-----------------------------에러검사 현재 스탭연계 확인--------------------------
+//    if(pMain->tCurrSen.Error) {
+//        status = VAULT_STATUS_ERROR;
+//    }
+//    else{
+//        status = 0;
+//    }
+//    qDebug() << "count complete";
+//    pMain->fCountStart = false;
+//    pMain->fOutStack = 0;
+//    countCompleteSignal(status);
+    // call deposit hook function
+    //-----------------------------------------------------------------------------
+
+    switch(currentMode){
+    case MODE_IDLE:
+        switch(currentStep){
+        case IDLE_NORMALSTATE:
+            if(tCurrSen.stacker) {      // 대기모드인데 아웃포켓 센서가 감지 됨
+                // HOOK 이벤트 호출 해야 함
+                pStatusFunc(STATUS_ERROROPERATION);
+                currentMode = MODE_ERRORMODE;
+            }
+            if(tCurrSen.Error){
+                status = VAULT_STATUS_ERROR;
+            }
+            else{
+                status = 0;
+                currentState = 0;
+                // 에러 우선순위에 따라서 순서대로 배열
+            }
+            break;
+        case IDLE_GATECLOSECHK:
+            if(pMain->m_stateThread->mc_stat == MACHINE_READY){
+                currentStep = IDLE_NORMALSTATE;
+                if(pMain->preMode == 1 || pMain->preMode == 2){     // 자동취소 전환 시에는 메인으로
+                    pMain->pStatusFunc(STATUS_TRANSIDLEMODE);
+                }
+                else if(pMain->preMode == 3){
+                    pMain->pStatusFunc(STATUS_CANCELCOMPLETE);      // 사용자 수동취소 시에는 취소 로딩화면으로
+                }
+            }
+            else{
+                if(waitCnt == 0){
+                    if(retryCnt <= 0){
+                        pStatusFunc(STATUS_ERROROPERATION);
+                        currentMode = MODE_ERRORMODE;
+                    }
+                    else{
+                        pMain->m_stateThread->transaction(CMD_IDLE,"");
+                        retryCnt -= 1;
+                        waitCnt = 10;
+                    }
+                }
+                else{
+                    waitCnt -= 1;
+                }
+            }
+            break;
+        }
+        break;
+    //-------------------------------------------------------------------------
+    case MODE_DEPOSIT:
+        qDebug() << "MODE_DEPOSIT"<< currentStep;
+        if(tCurrSen.Error){
+            status = VAULT_STATUS_ERROR;
+        }
+        else{
+            status = 0;
+        }
+        switch(currentStep){
+        case DEPOSIT_IDLE:                  // 작업대기상태
+            break;
+        case DEPOSIT_WAITINPUT:         // 투입대기
+            if(tCurrSen.hopper){
+                m_stateThread->transaction(CMD_CURRENCY_START,"");
+                currentStep = DEPOSIT_WAITCOUNT;
+                retryCnt = 5;
+                waitCnt = 0;
+            }
+            else{
+                if(waitCnt == 100){  // 20초 대기
+                    if(!pMain->tCurrSen.stacker){
+                        waitCnt = 0;
+                        setCurrentMode(MODE_IDLE);
+                    }
+                }
+                waitCnt++;
+            }
+
+            break;
+        case DEPOSIT_WAITCOUNT:
+            if(fCountStart){     // 계수대기
+                pStatusFunc(STATUS_COUNTSTART);
+                currentStep = DEPOSIT_WAITCOUNTING;
+            }
+            else{
+                if(retryCnt == 0){
+                    currentStep = DEPOSIT_WAITINPUT;
+                }
+                else{
+                    retryCnt -= 1;
+                }
+            }
+            break;
+        case DEPOSIT_WAITCOUNTING:      // 계수완료대기
+            if(fOutStack){
+                qDebug() << "count complete";
+                fCountStart = false;
+                fOutStack = 0;
+                countCompleteSignal(status);
+                currentStep = DEPOSIT_CHECKREJECT;
+                retryCnt = 10;
+                // call deposit hook function
+            }
+            else if(pMain->tCurrSen.Error) {
+                m_stateThread->transaction(CMD_CURRENCY_CHK_CNT_RELSULT,"");
+            }
+            break;
+        case DEPOSIT_CHECKREJECT:
+            if(chk_rejectPocket()){
+                pStatusFunc(STATUS_REJECTEXIST);
+                currentStep = DEPOSIT_WAITREJECT;
+            }
+            else{
+                if(retryCnt == 0){
+                    currentStep = DEPOSIT_WAITINPUT;
+//                    pStatusFunc(STATUS_REJECTCOMPLETE);
+                }
+                else{
+                    if(fCountStart){                            // 리젝 대기 타이밍 중에 계수가 시작되면 리젝이 없는것임
+                        currentStep = DEPOSIT_WAITCOUNT;
+                        break;
+                    }
+                    retryCnt  -= 1;                  // 리젝트 인식을 2초 대기
+                }
+            }
+            break;
+        case DEPOSIT_WAITREJECT:
+            if(!chk_rejectPocket()){
+                currentStep = DEPOSIT_WAITINPUT;
+                pStatusFunc(STATUS_REJECTCOMPLETE);
+            }
+            break;
+        }
+        break;
+    //------------------------------------------------------------------------------------------------
+    case MODE_BULK_DEPOSIT:
+        qDebug() << "MODE_BULK_DEPOSIT" << currentStep;
+        if(tCurrSen.Error){
+            status = VAULT_STATUS_ERROR;
+        }
+        else{
+            status = 0;
+        }
+
+        switch(currentStep){
+        case DEPOSIT_IDLE:                  // 작업대기상태
+            break;
+        case DEPOSIT_WAITINPUT:         // 투입대기
+            if(tCurrSen.hopper){
+                if(waitCnt >= 4){
+                    m_stateThread->transaction(CMD_CURRENCY_START,"");
+                    currentStep = DEPOSIT_WAITCOUNT;
+                    retryCnt = 5;
+                    waitCnt = 0;
+                }
+                else{
+                    waitCnt++;
+                }
+            }
+            else{
+                if(waitCnt == 150){  // 20초 대기
+                    if(!pMain->tCurrSen.stacker){
+                        waitCnt = 0;
+                        setCurrentMode(MODE_IDLE);
+                    }
+                }
+                waitCnt++;
+            }
+
+            break;
+        case DEPOSIT_WAITCOUNT:
+            if(fCountStart){     // 계수대기
+                pStatusFunc(STATUS_COUNTSTART);
+                currentStep = DEPOSIT_WAITCOUNTING;
+            }
+            else{
+                if(retryCnt == 0){
+                    currentStep = DEPOSIT_WAITINPUT;
+                }
+                else{
+                    retryCnt -= 1;
+                }
+            }
+            break;
+        case DEPOSIT_WAITCOUNTING:      // 계수완료대기
+            if(fOutStack){
+                qDebug() << "count complete";
+                fCountStart = false;
+                fOutStack = 0;
+                currentStep = DEPOSIT_CHECKREJECT;
+                retryCnt = 3;
+                // call deposit hook function
+            }
+            else if(pMain->tCurrSen.Error) {
+                m_stateThread->transaction(CMD_CURRENCY_CHK_CNT_RELSULT,"");
+            }
+            break;
+        case DEPOSIT_CHECKREJECT:
+            if(chk_rejectPocket()){
+                pStatusFunc(STATUS_REJECTEXIST);
+                currentStep = DEPOSIT_WAITREJECT;
+            }
+            else{
+                if(retryCnt == 0){
+//                    currentStep = DEPOSIT_WAITINPUT;
+                    pStatusFunc(STATUS_REJECTCOMPLETE);
+                    countCompleteSignal(status);
+                }
+                else{
+                    if(fCountStart){                            // 리젝 대기 타이밍 중에 계수가 시작되면 리젝이 없는것임
+//                        currentStep = DEPOSIT_WAITCOUNT;
+                        break;
+                    }
+                    retryCnt  -= 1;                  // 리젝트 인식을 2초 대기
+                }
+            }
+            break;
+        case DEPOSIT_WAITREJECT:
+            if(!chk_rejectPocket()){
+                pStatusFunc(STATUS_REJECTCOMPLETE);
+                countCompleteSignal(status);
+//                currentStep = DEPOSIT_WAITINPUT;
+            }
+            break;
+        }
+        break;
+    //----------------------------------------------------------------
+    case MODE_DEPOSIT_CANCEL:             //  취소 동작 시퀀스
+        switch(currentStep){
+        case CANCEL_GATEOPENCHK:          // 게이트 오픈 체크
+            if(pMain->m_stateThread->gt_outgate->gateStatus == GATE_OPENED){
+                currentStep = CANCEL_WAITRETURN;
+                pMain->pStatusFunc(STATUS_WAITRETURN);
+            }
+            else if(pMain->m_stateThread->gt_outgate->gateStatus == GATE_CHK_STAT){
+                if(waitCnt == 0){
+                    pMain->m_stateThread->transaction(CMD_RETURN,"");
+                    waitCnt = 10;
+                    retryCnt -= 1;
+                }
+            }
+            else if(pMain->m_stateThread->gt_outgate->gateStatus == GATE_ERROR){
+                pStatusFunc(STATUS_ERROROPERATION);
+                currentMode = MODE_ERRORMODE;
+            }
+            else if(pMain->m_stateThread->mc_stat == MACHINE_ERROR){
+                pStatusFunc(STATUS_ERROROPERATION);
+                currentMode = MODE_ERRORMODE;
+            }
+            else{
+                if(waitCnt == 0){
+                    if(retryCnt <= 0){
+                        pStatusFunc(STATUS_ERROROPERATION);   // later  get status 로 에러 정보 확인 하도록
+                        currentMode = MODE_ERRORMODE;
+                    }
+                    else{
+                        pMain->m_stateThread->transaction(CMD_OUTGATE_CLOSE,"");
+                        retryCnt -= 1;
+                        waitCnt = 10;
+                    }
+                }
+                else{
+                    waitCnt  -= 1;                  // 열림 완료 후 2초대기
+                }
+            }
+            break;
+        case CANCEL_WAITRETURN:           //  금액 회수 대기
+            if(!pMain->tCurrSen.stacker){
+                if(waitCnt == 0){
+                    pMain->m_stateThread->transaction(CMD_OUTGATE_CLOSE,"");
+                    currentStep = CANCEL_CHECKCLOSE;
+                    retryCnt = 5;       // 5회 재시도
+                    waitCnt = 10;        // 2초 대기
+                }
+                else{
+                    waitCnt  -= 1;                  // 회수 완료 후 2초대기
+                }
+            }
+            break;
+        case CANCEL_CHECKCLOSE:
+            if(pMain->m_stateThread->gt_outgate->gateStatus == GATE_CLOSED){
+                setCurrentMode(0);
+            }
+            else if(pMain->m_stateThread->gt_outgate->gateStatus == GATE_CHK_STAT){
+                if(waitCnt == 0){
+                    pMain->m_stateThread->transaction(CMD_OUTGATE_CLOSE,"");
+                    waitCnt = 10;
+                    retryCnt -= 1;
+                }
+                waitCnt  -= 1;
+            }
+            else if(pMain->m_stateThread->gt_outgate->gateStatus == GATE_ERROR){
+                pStatusFunc(STATUS_ERROROPERATION);
+                currentMode = MODE_ERRORMODE;
+            }
+            else if(pMain->m_stateThread->mc_stat == MACHINE_ERROR){
+                pStatusFunc(STATUS_ERROROPERATION);
+                currentMode = MODE_ERRORMODE;
+            }
+            else{
+                if(waitCnt == 0){
+                    if(retryCnt <= 0){
+                        pStatusFunc(STATUS_ERROROPERATION);
+                        currentMode = MODE_ERRORMODE;
+                    }
+                    else{
+                        pMain->m_stateThread->transaction(CMD_OUTGATE_CLOSE,"");
+                        retryCnt -= 1;
+                        waitCnt = 10;
+                    }
+                }
+                else{
+                    waitCnt  -= 1;                  // 회수 완료 후 2초대기
+                }
+            }
+            break;
+        }
+        break;
+    //----------------------------------------------------------------
+    case MODE_DEPOSIT_COMPLETE:             //  완료 모드
+        qDebug() << "MODE_DEPOSIT_COMPLETE"<< currentStep;
+        switch(currentStep){
+        case COMPLETE_GATEOPENCHK:
+            if(m_stateThread->mc_stat == MACHINE_DEPOSITED){
+                currentStep = COMPLETE_GATECLOSECHK;
+                m_stateThread->transaction(CMD_IDLE,"");
+                waitCnt = 10;
+            }
+            else{
+                if(waitCnt == 0){
+                    if(retryCnt <= 0){
+                        pStatusFunc(STATUS_ERROROPERATION);
+                        currentMode = MODE_ERRORMODE;
+                    }
+                    else{
+                        m_stateThread->transaction(CMD_DEPOSIT,"");
+                        retryCnt -= 1;
+                        waitCnt = 20;
+                    }
+                }
+                else{
+                    waitCnt -= 1;
+                }
+            }
+            break;
+        case COMPLETE_WAITDEPOSIT:           //  금액 입금 대기
+            if(!tCurrSen.stacker) {      // 아웃포켓 비워 졌을 때
+                m_stateThread->transaction(CMD_IDLE,"");
+                currentStep = COMPLETE_GATECLOSECHK;
+                retryCnt = 5;       // 5회 재시도
+                waitCnt = 10;       // 2초 대기
+            }
+            break;
+        case COMPLETE_GATECLOSECHK:
+            if(m_stateThread->mc_stat == MACHINE_READY){
+                setCurrentMode(0);
+            }
+            else{
+                if(waitCnt == 0){
+                    if(retryCnt <= 0){
+                        pStatusFunc(STATUS_ERROROPERATION);
+                        currentMode = MODE_ERRORMODE;
+                    }
+                    else{
+                        pMain->m_stateThread->transaction(CMD_IDLE,"");
+                        retryCnt -= 1;
+                        waitCnt = 10;
+                    }
+                }
+                else{
+                    waitCnt -= 1;
+                }
+            }
+            break;
+        }
+        break;
+    //----------------------------------------------------------------
+    case MODE_TRANSCASH:                    //  현송 모드
+        if(pMain->m_stateThread->mc_stat == MACHINE_ERROR){
+            pStatusFunc(STATUS_ERROROPERATION);
+            currentMode = MODE_ERRORMODE;
+        }
+        else if(transStep == 1){
+            if(pMain->fDoorOpen) {     // Complete Sealing and door locker unlock
+                transStep = 2;
+                settlementCompleteSignal(0);
+            }
+        }
+        break;
+    case MODE_ERRORMODE:                    //  에러 모드
+        // 에러에따른 처리여부 체크
+        break;
+    }
+}
+//------------------------------------------------------------------------------------------------------------------------------------------------
+void InnoSDK::init_serial(){
+    m_serial = new QSerialPort(this);
+    m_serial->setPortName("ttyAMA0");
+    m_serial->setBaudRate(QSerialPort::Baud115200);
+
+    if (m_serial->open(QIODevice::ReadWrite)!= true) {
+        qDebug() << "Serial Open Error";
+    }
+    m_stateThread = new State_Thread();
+
+    // serial ->  read Event
+    connect(m_serial, &QSerialPort::readyRead, this, &InnoSDK::readData);
+    // read serial data -> thread
+    connect(this,&InnoSDK::wndSendRxData,m_stateThread,&State_Thread::rcvRxData);
+    // thread ->  sdk
+    connect(m_stateThread, &State_Thread::mc2HMI, this,&InnoSDK::rsvMcData);
+
+    // thread -> serial
+    connect(m_stateThread, &State_Thread::writeTxData, this, &InnoSDK::writeData);
+    m_stateThread->start();
+}
+
+
+
+
+
+//------------------------------------------------------------------serial------------------------------------------------
+void InnoSDK::rsvMcData(int cmd, void * pdata)
+{
+    QByteArray bData;
+    switch (cmd)
+    {
+    case ACK_CURRENCY_RESULT:      // Currency
+        qDebug() << "MainWindow - ACK_CURRENCY_RESULT";
+        m_stateThread->setSensor(CUR_SEN);
+        memcpy(&tNoteData,(t_NOTE *)pdata, sizeof(t_NOTE));
+        fOutStack = true;
+        break;
+
+    case ACK_CURRENCY_SENSOR:       // Currency Sensor
+//        qDebug() << "get sensor";
+        memcpy(&tCurrSen,(t_CUR_SENSOR *)pdata, sizeof(t_CUR_SENSOR));
+        break;
+
+    case ACK_CURRENCY_COUNT_START:
+        m_stateThread->setSensor(CUR_SEN);
+        memcpy(&tCurrSen,(t_CUR_SENSOR *)pdata, sizeof(t_CUR_SENSOR));
+        fCountStart = true;
+        break;
+
+    case ACK_GATE_EMERGENCY:
+        fGateEmcy = true;
+        break;
+
+    case ACK_SEAL_COMPLETE:
+        qDebug() << "MainWindow - Seal Complete";
+        fSealComplete = true;
+        break;
+
+    case ACK_DOOR_OPEN:
+        qDebug() << "MainWindow - Door Open";
+        fDoorOpen = true;
+        fDoorClose = false;
+        break;
+
+    case ACK_DOOR_CLOSE:
+        qDebug() << "MainWindow - Door close";
+        fDoorOpen = false;
+        fDoorClose = true;
+        break;
+
+    case ACK_DEVICE_ERROR:
+        qDebug() << "Device - Error";
+        memcpy(&dev_err,(uint32_t *)pdata, sizeof(uint32_t));
+        break;
+
+    case ACK_RECEIPT_COMPLETE:
+        receipt_comp = 1;
+        break;
+
+    case ACK_BARCODE_DATA:
+        bData.append( *(QByteArray *)pdata);
+        qDebug() << "barcode = " << bData << QString::fromUtf8(bData.data()) << QString::fromUtf8(bData.data()).toUtf8();
+        currentBagCode = QString::fromUtf8(bData.data());
+        break;
+
+    case ACK_BARCODE_TIMEOUT:
+        // Barcode Time Out
+
+        break;
+
+    case ACK_FINGER_IDENTIFY:
+        fingerState = 1;
+        break;
+
+    case ACK_FINGER_TIMEOUT:
+        fingerState = 3;
+        break;
+
+    case ACK_FINGER_NOTFOUND:
+        fingerState = 2;
+        break;
+
+    default:
+        break;
+    }
+}
+
+void InnoSDK::readData()
+{
+    QByteArray data = m_serial->readAll();
+
+    emit wndSendRxData(data);
+}
+
+void InnoSDK::writeData(const QByteArray &data)
+{
+    m_serial->write(data);
+
+}
+
+
+char *InnoSDK::getStatusMessage(int state){
+
+    char *msg;
+    switch(state){
+    case VAULT_STATUS_NO_ERROR:
+        msg = "no error";
+        break;
+    case VAULT_STATUS_NO_COMM:
+        msg = "no comm";
+        break;
+    case VAULT_STATUS_SCROW_GATE_OPEN:
+        msg = "no scrowOpen";
+        break;
+    case VAULT_STATUS_VAULT_GATE_OPEN:
+        msg = "no vaultOpen";
+        break;
+    case VAULT_STATUS_NO_ALARM:
+        msg = "no alarm";
+        break;
+    case VAULT_STATUS_NO_FINGERPRINT:
+        msg = "no fingerprint";
+        break;
+    case VAULT_STATUS_NO_SCROW_DETECTED:
+        msg = "no scrow_detected";
+        break;
+    case VAULT_STATUS_NO_BAG_DETECTED:
+        msg = "no bag_detected";
+        break;
+    }
+    return msg;
+}
